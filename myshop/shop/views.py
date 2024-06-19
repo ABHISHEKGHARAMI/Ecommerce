@@ -22,3 +22,19 @@ def product_list(request,category_slug = None):
             'products' : products
         }
     )
+
+
+# view for the product detail 
+def product_detail(request,id,slug=None):
+    product = get_object_or_404(Product,
+                                 id=id,
+                                 slug=slug,
+                                 available=True)
+    
+    return render(
+        request,
+        'shop/product/detail.html',
+        {
+            'product' : product
+        }
+    )
