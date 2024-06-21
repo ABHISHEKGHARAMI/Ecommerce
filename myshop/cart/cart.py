@@ -43,5 +43,11 @@ class Cart:
         self.save()
         
         
+        
+    # iterate over the database for get the data for product
+    def __iter__(self):
+        pass
+        
+        
     
         
