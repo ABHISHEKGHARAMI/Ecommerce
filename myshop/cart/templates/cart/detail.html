@@ -1,0 +1,41 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+   Your shopping cart.
+{% endblock %}
+
+
+{% block content %}
+   <h1>Your shopping cart.</h1>
+   <table class="cart">
+      <thead>
+         <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Remove</th>
+            <th>Unit price</th>
+            <th>Price</th>
+         </tr>
+      </thead>
+      <tbody>
+        {% for item in cart %}
+        
+        {% endfor %}
+
+        <tr class="total">
+          <td>Total</td>
+          <td colspan="4"></td>
+          <td class="num">${{ cart.get_total_price }}</td>
+          <td>
+          <form action="{% url "cart:cart_remove" product_id %}"> 
+             <input type="submit" value="Remove">
+          </form>
+          </td>
+          <td class="num">${{ item.price }}</td>
+          <td class="num">${{ item.total_price }}</td>
+        </tr>
+      </tbody>
+   </table>
+{% endblock %}
