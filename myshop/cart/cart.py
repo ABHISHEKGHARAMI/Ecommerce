@@ -65,7 +65,16 @@ class Cart:
     # count all the items present in the cart
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
-        
+    
+    
+    #get the total price of the item in  the cart of the user
+    def get_total_price(self):
+        return sum(Decimal(item['price'])*item['quantity'] for item in self.cart.values())
+    
+    #finally clear the sessions
+    def clear(self):
+        del self.session[settings.CART_SESSION_ID]
+        self.save()        
         
     
         
