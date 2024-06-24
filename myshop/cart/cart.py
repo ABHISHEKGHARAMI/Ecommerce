@@ -12,11 +12,11 @@ class Cart:
         cart = self.session.get(settings.CART_SESSION_ID)
         
         if not cart:
-            cart = self.session[settings.CART_SESSION_ID]
+            cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
         
     #adding the product for the cart
-    def add(self,product,quantity=1,override_quality=False):
+    def add(self,product,quantity=1,override_quantity=False):
         product_id = str(product.id)
         if product_id not in self.cart:
             self.cart[product_id] = {
