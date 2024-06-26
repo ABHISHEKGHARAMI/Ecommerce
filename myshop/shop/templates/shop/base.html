@@ -23,6 +23,8 @@
                   {{total_items}}item{{total_items|pluralize}},
                   ${{cart.get_total_price}}
                  </a>
+            {% elif not order %}
+              Your curt is empty.
             {% else %}
               Your cart is empty.
             {% endif %}
