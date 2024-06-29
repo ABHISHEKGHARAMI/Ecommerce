@@ -2,7 +2,7 @@ from decimal import Decimal
 import stripe
 from django.conf import settings
 from django.shortcuts import render , reverse, redirect, get_object_or_404
-from orders.model import Order
+from orders.models import Order
 # Create your views here.
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
