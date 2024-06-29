@@ -19,6 +19,33 @@ def payment_process(request):
         
         cancel_url = request.build_absolute_uri(reverse('payment:canceled'))
         
+        # stripe checkout session data
+        session_data = {
+            'mode' : 'payment',
+            'client_reference_id' : order.id,
+            'success_url' : success_url,
+            'cancel_url' : cancel_url,
+            'line_items' : []
+        }
+        # add order items to the Stripe checkout session
+        for item in order.items.all():
+            session_data['line_items'].append({
+                'price_data': {
+                'unit_amount': int(item.price * Decimal('100')),
+                'currency': 'usd',
+                 'product_data': {
+                   'name': item.product.name,
+                     },
+                },
+                'quantity': item.quantity,
+            })
+
+        
+        #create the checkout session
+        session = stripe.checkout.Session.create(**session_data)
+        
+        return redirect(session.url,code=303)
+        
     else:
         return render(
             request,
