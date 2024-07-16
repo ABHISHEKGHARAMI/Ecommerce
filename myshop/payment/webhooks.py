@@ -3,12 +3,13 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from orders.models import Order
+from .tasks import payment_completed
 
 
 @csrf_exempt
 def stripe_webhook(request):
     payload = request.body
-    sig_header = request.META('HTTP_STRIPE_SIGNATURE')
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
     event = None
     
     try:
@@ -31,13 +32,15 @@ def stripe_webhook(request):
                 order = Order.objects.get(id=session.client_reference_id)
             except Order.DoesNotExist:
                 return HttpResponse(status=404)
+            
+            
             # mark order as paid
             order.paid = True
             # store Stripe payment ID
             order.stripe_id = session.payment_intent
             order.save()
-
             # launch asynchronous task
-            payment_completed.delay(order.id)
+            #payment_completed.delay(order.id)
+
     
     return HttpResponse(status=200)
