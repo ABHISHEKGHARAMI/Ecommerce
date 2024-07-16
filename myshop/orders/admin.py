@@ -14,7 +14,7 @@ def order_payment(obj):
         html = f'<a href="{url}" target="_blank">{obj.stripe_id}</a>'
         return mark_safe(html)
         return ''
-    order_payment.payment.short_description = 'Stripe payment'
+order_payment.short_description = 'Stripe payment'
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
