@@ -33,6 +33,11 @@ def stripe_webhook(request):
                 return HttpResponse(status=404)
             # mark order as paid
             order.paid = True
+            # store Stripe payment ID
+            order.stripe_id = session.payment_intent
             order.save()
+
+            # launch asynchronous task
+            payment_completed.delay(order.id)
     
     return HttpResponse(status=200)
