@@ -9,6 +9,9 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 #import weasyprint
+from xhtml2pdf import pisa
+import os
+import io
 
 # Create your views here.
 
@@ -68,4 +71,22 @@ def admin_order_pdf(request,order_id):
     #weasyprint.HTML(string=html).write_pdf(response,
     #stylesheets=[weasyprint.CSS(
         #settings.STATIC_ROOT / 'css/pdf.css')])
+    result = io.BytesIO()
+    pdf = pisa.CreatePDF(
+        src=html,
+        dest=result,
+        link_callback=fetch_resources,
+        default_css=css
+    )
+    
+    if pdf.err:
+        return HttpResponse('We had some errors with the PDF generation')
+
+    response.write(result.getvalue())
     return response
+
+
+def fetch_resources(uri, rel):
+    path = os.path.join(settings.STATIC_ROOT,
+                        uri.replace(settings.STATIC_URL, ""))
+    return path
