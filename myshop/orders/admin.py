@@ -51,7 +51,7 @@ def order_payment(obj):
     if obj.stripe_id:
         html = f'<a href="{url}" target="_blank">{obj.stripe_id}</a>'
         return mark_safe(html)
-    return ''
+    #return ''
 order_payment.short_description = 'Stripe payment'
 
 @admin.register(Order)
